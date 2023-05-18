@@ -14,6 +14,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/ocenath/maven-test.git'
             }
         }
+        stage(sonarqube scan) {
+            steps{
+            withSonarQubeEnv('sonar') {
+            sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ocenath_geolocation-1'
+            }
+        }
+
+
+        }
         stage('Code Build') {
             steps {
                 sh 'mvn clean install package'
